@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           Int       @id @default(autoincrement())
+  username     String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+}
+
+model Session {
+  id          Int       @id @default(autoincrement())
+  token       String    @unique
+  expiresAt   DateTime
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+  adminUserId Int
+  createdAt   DateTime  @default(now())
+}
+
+model PersonalInfo {
+  id          Int      @id @default(autoincrement())
+  fullName    String
+  title       String
+  photoUrl    String
+  shortBio    String
+  email       String
+  city        String
+  githubUrl   String
+  linkedinUrl String
+  websiteUrl  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Education {
+  id           Int      @id @default(autoincrement())
+  school       String
+  degree       String
+  field        String
+  startDate    DateTime
+  endDate      DateTime?
+  description  String
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SkillCategory {
+  id        Int      @id @default(autoincrement())
+  name      String
+  order     Int      @default(0)
+  skills    Skill[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Skill {
+  id          Int           @id @default(autoincrement())
+  name        String
+  level       String?
+  order       Int           @default(0)
+  category    SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId  Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Experience {
+  id           Int      @id @default(autoincrement())
+  company      String
+  role         String
+  location     String?
+  startDate    DateTime
+  endDate      DateTime?
+  description  String
+  technologies String
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id               Int            @id @default(autoincrement())
+  slug             String         @unique
+  name             String
+  shortDescription String
+  longDescription  String
+  techStack        String
+  order            Int            @default(0)
+  links            ProjectLink[]
+  images           ProjectImage[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model ProjectLink {
+  id        Int     @id @default(autoincrement())
+  label     String
+  url       String
+  order     Int     @default(0)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int
+}
+
+model ProjectImage {
+  id        Int     @id @default(autoincrement())
+  imageUrl  String
+  altText   String
+  order     Int     @default(0)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int
+}

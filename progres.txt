@@ -1,0 +1,11 @@
+Postepy:
+1. Zainicjowano projekt Next.js z Tailwind CSS i TypeScript oraz dostosowano layout i globalny motyw do nowej palety (szary + turkusowy).
+2. Zaimplementowano pełny model danych w Prisma (PersonalInfo, Education, SkillCategory, Skill, Experience, Project, ProjectLink, ProjectImage, AdminUser, Session) wraz z seedami i skryptem DB.
+3. Stworzono publiczny widok CV (/cv) z lewym profilem, sekcjami edukacji/umiejętności/doświadczeń, kartami projektów i drawerem master-detail powiązanym z parametrem URL.
+4. Rozbudowano panel admina (/cv-admin) o zakładki, formularze CRUD dla każdej sekcji oraz obsługę linków i galerii projektów, z rewalidacją danych po zapisach.
+5. Przygotowano logikę auth (login, sesje w DB, cookie HTTP-only) i odświeżono ekran logowania pod nową identyfikację wizualną.
+
+Do zrobienia:
+1. Uruchomić migracje i seed (np. `npx prisma migrate dev` + `npm run prisma:seed`) aby fizyczna baza odpowiadała nowemu schematowi.
+2. W produkcji podać właściwe zmienne środowiskowe (DATABASE_URL, ADMIN_USERNAME, ADMIN_PASSWORD, SESSION_TTL_HOURS) oraz wykonać `prisma migrate deploy`/`prisma db seed` w pipeline.
+3. Uzupełnić panel realnymi danymi CV po wdrożeniu.

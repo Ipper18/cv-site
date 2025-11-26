@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CV Site
 
-## Getting Started
+Personal CV/portfolio built with Next.js (App Router), Tailwind CSS, and Prisma. It exposes two entry points:
 
-First, run the development server:
+- `/cv` – read-only CV view rendered from the database (falls back to bundled seed data only when the database is empty).
+- `/cv-admin` – password-protected admin area with forms for all CV entities.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tech Stack
+
+- Next.js 16 App Router + React 19
+- Tailwind CSS v4 for styling
+- Prisma ORM targeting SQLite locally (schema stays Postgres-compatible)
+- Simple session auth with username/password + HTTP-only cookie
+- Dockerfile ready for Coolify (`npm run start` on port 3000)
+
+## Local Development
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+2. **Create `.env`**
+   ```bash
+   cp .env.example .env
+   ```
+   Populate:
+   - `DATABASE_URL` – defaults to `file:./prisma/dev.db` for SQLite.
+   - `ADMIN_USERNAME` and `ADMIN_PASSWORD` – required for seeding & login.
+   - `SESSION_TTL_HOURS` – optional (defaults to 24 hours).
+3. **Prepare the database**
+   ```bash
+   npx prisma migrate dev --name init     # creates SQLite db + schema
+   npm run prisma:seed                    # seeds preview CV data + admin user
+   ```
+4. **Run the app**
+   ```bash
+   npm run dev
+   ```
+   - `/cv` shows the public CV.
+   - `/cv-admin` prompts for the seeded credentials.
+
+## Admin Credentials
+
+`npm run prisma:seed` creates/updates the admin user with the credentials defined in `.env`. Re-run the seed command whenever you want to rotate the password during development.
+
+## Prisma & Databases
+
+- The schema is authored against SQLite for a frictionless local DX.
+- It only uses types/features compatible with Postgres. To deploy on Postgres (e.g., inside Coolify):
+  1. Set `DATABASE_URL` to your Postgres connection string.
+  2. Update `datasource db { provider = "postgresql" }` inside `prisma/schema.prisma`.
+  3. Run `npm run prisma:migrate` (or `prisma migrate deploy`) in the deployment environment before starting the server.
+
+Helpful commands:
+```
+npm run prisma:generate   # regenerate Prisma client
+npm run prisma:push       # push schema without migrations (dev only)
+npm run prisma:seed       # seed preview data + admin user
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Docker / Coolify
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The included `Dockerfile` performs a multi-stage build:
+1. Install dependencies with `npm ci`.
+2. Build the Next.js project and prune dev dependencies.
+3. Copy the production artifacts into a slim Node.js 20 runtime and start with `npm run start` on port `3000`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In Coolify, provide at least the following environment variables:
+- `DATABASE_URL`
+- `ADMIN_USERNAME`
+- `ADMIN_PASSWORD`
+- `SESSION_TTL_HOURS` (optional)
 
-## Learn More
+Run `npx prisma migrate deploy && npm run prisma:seed` as part of your deployment workflow to ensure the database schema and starter content exist before the app starts.
 
-To learn more about Next.js, take a look at the following resources:
+## Auth & Sessions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Login happens entirely server-side via a server action.
+- Sessions live in the `Session` table; `SESSION_TTL_HOURS` controls expiration.
+- Logout clears the record and the HTTP-only cookie.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure Highlights
 
-## Deploy on Vercel
+```
+prisma/              Prisma schema + seed script
+src/app/cv           Public CV route
+src/app/cv-admin     Admin dashboard + login + actions
+src/lib              Prisma client, auth helpers, seed data, utils
+src/components       Reusable client/server components
+Dockerfile           Multi-stage build for Coolify
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Next Steps
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Update the preview content from `/cv-admin` once real data is available.
+- Configure Coolify to run database migrations + seeding before starting the container.
+- Replace SQLite with Postgres in production following the steps above.
+
+## UI Highlights
+- Responsive two-column CV layout with sticky profile card, soft gray palette, and teal accent interactions.
+- Project cards open a URL-driven drawer (`/cv?project=slug`) with long description, tech tags, links, and gallery images.
+- Hover microinteractions (scale + shadow) and fade-in sections provide subtle motion without heavy libraries.
+
+## Admin Panel
+- Tabbed dashboard covering Personal Info, Education, Skills, Experience, and Projects.
+- Projects tab manages slugs, descriptions, tech stack, plus nested link/image tables with ordering controls.
+- All changes invalidate `/cv` instantly; credentials stay sourced from env vars only.
