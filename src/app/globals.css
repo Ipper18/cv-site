@@ -43,6 +43,47 @@ select {
   }
 }
 
+.admin-card {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fade-up 0.45s ease forwards;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+.pressable {
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.pressable:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+}
+
+.modal-fade-enter {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.modal-fade-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.16s ease, transform 0.2s ease;
+}
+
+.modal-fade-exit {
+  opacity: 1;
+}
+
+.modal-fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.14s ease;
+}
+
 .drawer-enter {
   transform: translateX(100%);
 }

@@ -10,7 +10,11 @@ export function LoginForm() {
   const [state, formAction] = useFormState(loginAction, initialState);
 
   return (
-    <form action={formAction} className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-8 shadow-xl">
+    <form
+      action={formAction}
+      className="w-full max-w-md space-y-4 rounded-3xl border border-slate-200 bg-white p-8 shadow-xl"
+      autoComplete="off"
+    >
       <div>
         <p className="text-xs uppercase tracking-[0.4em] text-[var(--accent)]">CV Admin</p>
         <h1 className="text-2xl font-semibold text-[var(--foreground)]">Sign in</h1>
@@ -20,6 +24,7 @@ export function LoginForm() {
         Username
         <input
           name="username"
+          autoComplete="username"
           className="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--accent)]"
           required
         />
@@ -29,6 +34,7 @@ export function LoginForm() {
         <input
           type="password"
           name="password"
+          autoComplete="current-password"
           className="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--accent)]"
           required
         />
