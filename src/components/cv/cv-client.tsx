@@ -7,6 +7,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import type { CvData, CvEducation, CvExperience, CvProject, CvSkillCategory, CvPersonalInfo } from "@/lib/cv-data";
 import { formatDateRange } from "@/lib/utils";
+import { useLanguage } from "@/components/i18n/language-provider";
+import { useCvTranslation } from "@/components/i18n/use-cv-translation";
 
 type Props = {
   data: CvData;
@@ -17,8 +19,10 @@ export function CvClient({ data, personalInfo }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { language, isTyping } = useLanguage();
+  const { data: localizedData, personalInfo: localizedPersonal, loading, error } = useCvTranslation(data, personalInfo, language);
   const querySlug = searchParams.get("project");
-  const projectsBySlug = useMemo(() => new Map(data.projects.map((p) => [p.slug, p])), [data.projects]);
+  const projectsBySlug = useMemo(() => new Map(localizedData.projects.map((p) => [p.slug, p])), [localizedData.projects]);
   const selectedProject = querySlug ? projectsBySlug.get(querySlug) : undefined;
 
   const handleSelectProject = (slug: string) => {
@@ -36,16 +40,17 @@ export function CvClient({ data, personalInfo }: Props) {
   };
 
   return (
-    <div className="relative">
+    <div className={`relative ${isTyping || loading ? "language-typing" : ""}`}>
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 lg:flex-row">
         <aside className="lg:w-1/3 lg:min-h-screen lg:sticky lg:top-8">
-          <ProfileCard personalInfo={personalInfo} />
+          <ProfileCard personalInfo={localizedPersonal} />
         </aside>
         <main className="flex-1 space-y-16">
+          {error ? <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">{error}</p> : null}
           <section className="fade-section space-y-6">
             <SectionHeader title="Education" subtitle="Formal training that anchors automation work" />
             <div className="space-y-4">
-              {data.education.map((entry) => (
+              {localizedData.education.map((entry) => (
                 <EducationCard key={entry.id ?? entry.school} education={entry} />
               ))}
             </div>
@@ -54,7 +59,7 @@ export function CvClient({ data, personalInfo }: Props) {
           <section className="fade-section space-y-6">
             <SectionHeader title="Skills" subtitle="Toolkits, stacks, and leadership focus" />
             <div className="space-y-6">
-              {data.skillCategories.map((category) => (
+              {localizedData.skillCategories.map((category) => (
                 <SkillCard key={category.id ?? category.name} category={category} />
               ))}
             </div>
@@ -63,7 +68,7 @@ export function CvClient({ data, personalInfo }: Props) {
           <section className="fade-section space-y-6">
             <SectionHeader title="Experience" subtitle="Recent engagements" />
             <div className="space-y-4">
-              {data.experiences.map((experience) => (
+              {localizedData.experiences.map((experience) => (
                 <ExperienceCard key={experience.id ?? experience.company} experience={experience} />
               ))}
             </div>
@@ -72,7 +77,7 @@ export function CvClient({ data, personalInfo }: Props) {
           <section className="fade-section space-y-6">
             <SectionHeader title="Projects" subtitle="Preview builds currently in focus" />
             <div className="grid gap-4 md:grid-cols-2">
-              {data.projects.map((project) => (
+              {localizedData.projects.map((project) => (
                 <button
                   key={project.id ?? project.slug}
                   type="button"

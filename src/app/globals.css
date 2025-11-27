@@ -202,6 +202,140 @@ select {
   transition: transform 0.3s ease;
 }
 
+.language-toggle {
+  position: fixed;
+  left: 1.25rem;
+  top: 1.25rem;
+  z-index: 36;
+}
+
+.language-toggle button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 9999px;
+  border: 1px solid var(--card-border);
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.14), rgba(255, 255, 255, 0.05));
+  color: var(--foreground);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  transition: transform 140ms ease, box-shadow 140ms ease, background-color 160ms ease;
+}
+
+.language-toggle button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+}
+
+.language-toggle button:active {
+  transform: translateY(1px) scale(0.995);
+  box-shadow: var(--shadow-press);
+}
+
+.flag-track {
+  background: var(--soft-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 9999px;
+  width: 64px;
+  height: 32px;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.flag-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: var(--card-bg);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+  transition: transform 200ms ease, background-color 200ms ease;
+}
+
+.flag-thumb-pl {
+  transform: translateX(0);
+}
+
+.flag-thumb-en {
+  transform: translateX(30px);
+}
+
+.flag-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.flag-text {
+  transition: color 160ms ease;
+}
+
+.flag-text.is-active {
+  color: var(--foreground);
+}
+
+.flag-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--card-border);
+}
+
+.flag {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.14);
+  transition: transform 200ms ease;
+}
+
+.flag-pl {
+  background: linear-gradient(to bottom, #ffffff 50%, #d4213d 50%);
+}
+
+.flag-en {
+  background:
+    linear-gradient(0deg, #c8102e 20%, transparent 20%, transparent 80%, #c8102e 80%),
+    linear-gradient(90deg, #c8102e 20%, transparent 20%, transparent 80%, #c8102e 80%),
+    linear-gradient(45deg, #012169 25%, #ffffff 25%, #ffffff 30%, #c8102e 30%, #c8102e 70%, #ffffff 70%, #ffffff 75%, #012169 75%),
+    linear-gradient(-45deg, #012169 25%, #ffffff 25%, #ffffff 30%, #c8102e 30%, #c8102e 70%, #ffffff 70%, #ffffff 75%, #012169 75%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+}
+
+.language-typing p,
+.language-typing h1,
+.language-typing h2,
+.language-typing h3,
+.language-typing h4,
+.language-typing li,
+.language-typing span,
+.language-typing button,
+.language-typing a {
+  animation: typing-blur 0.45s linear;
+}
+
+.language-typing .flag-thumb {
+  animation: none;
+}
+
+@keyframes typing-blur {
+  0% {
+    opacity: 0;
+    filter: blur(3px);
+    letter-spacing: 6px;
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    letter-spacing: normal;
+  }
+}
+
 .theme-toggle {
   position: fixed;
   right: 1.5rem;
