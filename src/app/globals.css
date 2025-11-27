@@ -300,11 +300,16 @@ select {
 
 .flag-en {
   background:
-    linear-gradient(0deg, #c8102e 20%, transparent 20%, transparent 80%, #c8102e 80%),
-    linear-gradient(90deg, #c8102e 20%, transparent 20%, transparent 80%, #c8102e 80%),
-    linear-gradient(45deg, #012169 25%, #ffffff 25%, #ffffff 30%, #c8102e 30%, #c8102e 70%, #ffffff 70%, #ffffff 75%, #012169 75%),
-    linear-gradient(-45deg, #012169 25%, #ffffff 25%, #ffffff 30%, #c8102e 30%, #c8102e 70%, #ffffff 70%, #ffffff 75%, #012169 75%);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    linear-gradient(180deg, #ffffff 32%, transparent 32%, transparent 68%, #ffffff 68%),
+    linear-gradient(90deg, #ffffff 32%, transparent 32%, transparent 68%, #ffffff 68%),
+    linear-gradient(180deg, #c8102e 44%, transparent 44%, transparent 56%, #c8102e 56%),
+    linear-gradient(90deg, #c8102e 44%, transparent 44%, transparent 56%, #c8102e 56%),
+    linear-gradient(135deg, transparent 74%, #ffffff 74%, #ffffff 82%, transparent 82%),
+    linear-gradient(45deg, transparent 74%, #ffffff 74%, #ffffff 82%, transparent 82%),
+    linear-gradient(135deg, transparent 80%, #c8102e 80%, #c8102e 86%, transparent 86%),
+    linear-gradient(45deg, transparent 80%, #c8102e 80%, #c8102e 86%, transparent 86%),
+    #012169;
+  background-size: 100% 100%;
 }
 
 .language-typing p,
