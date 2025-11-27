@@ -1,7 +1,10 @@
+// prisma/seed.ts
+
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
 
-import { seedData } from "../src/lib/seed-data";
+
+import { seedData } from "./seed-data";
 
 const prisma = new PrismaClient();
 
@@ -10,13 +13,17 @@ function toDate(value: string) {
 }
 
 async function seedAdmin() {
-  const username = process.env.ADMIN_USERNAME?.trim().toLowerCase();
+  const usernameEnv = process.env.ADMIN_USERNAME;
   const password = process.env.ADMIN_PASSWORD;
 
-  if (!username || !password) {
-    throw new Error("ADMIN_USERNAME and ADMIN_PASSWORD must be supplied when seeding");
+  if (!usernameEnv || !password) {
+    throw new Error(
+      "ADMIN_USERNAME and ADMIN_PASSWORD must be supplied when seeding"
+    );
   }
 
+
+  const username = usernameEnv.trim().toLowerCase();
   const passwordHash = await bcrypt.hash(password, 12);
 
   await prisma.adminUser.upsert({
@@ -24,6 +31,8 @@ async function seedAdmin() {
     update: { passwordHash },
     create: { username, passwordHash },
   });
+
+  console.log(`Admin user "${username}" seeded/updated.`);
 }
 
 async function seedPersonalInfo() {
@@ -121,7 +130,9 @@ async function main() {
 }
 
 main()
-  .then(() => prisma.$disconnect())
+  .then(async () => {
+    await prisma.$disconnect();
+  })
   .catch(async (error) => {
     console.error(error);
     await prisma.$disconnect();
