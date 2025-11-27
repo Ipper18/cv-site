@@ -3,10 +3,12 @@
 import { useLanguage } from "./language-provider";
 
 function Flag({ variant }: { variant: "pl" | "en" }) {
-  if (variant === "pl") {
-    return <span className="flag flag-pl" aria-hidden="true" />;
-  }
-  return <span className="flag flag-en" aria-hidden="true" />;
+  const emoji = variant === "pl" ? "🇵🇱" : "🇬🇧";
+  return (
+    <span className="flag" role="img" aria-label={variant === "pl" ? "Polska" : "United Kingdom"}>
+      {emoji}
+    </span>
+  );
 }
 
 export function LanguageToggle() {

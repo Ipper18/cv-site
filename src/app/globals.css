@@ -287,29 +287,10 @@ select {
 }
 
 .flag {
-  width: 18px;
-  height: 18px;
-  border-radius: 9999px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.14);
-  transition: transform 200ms ease;
-}
-
-.flag-pl {
-  background: linear-gradient(to bottom, #ffffff 50%, #d4213d 50%);
-}
-
-.flag-en {
-  background:
-    linear-gradient(180deg, #ffffff 32%, transparent 32%, transparent 68%, #ffffff 68%),
-    linear-gradient(90deg, #ffffff 32%, transparent 32%, transparent 68%, #ffffff 68%),
-    linear-gradient(180deg, #c8102e 44%, transparent 44%, transparent 56%, #c8102e 56%),
-    linear-gradient(90deg, #c8102e 44%, transparent 44%, transparent 56%, #c8102e 56%),
-    linear-gradient(135deg, transparent 74%, #ffffff 74%, #ffffff 82%, transparent 82%),
-    linear-gradient(45deg, transparent 74%, #ffffff 74%, #ffffff 82%, transparent 82%),
-    linear-gradient(135deg, transparent 80%, #c8102e 80%, #c8102e 86%, transparent 86%),
-    linear-gradient(45deg, transparent 80%, #c8102e 80%, #c8102e 86%, transparent 86%),
-    #012169;
-  background-size: 100% 100%;
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 200ms ease, filter 200ms ease;
 }
 
 .language-typing p,
