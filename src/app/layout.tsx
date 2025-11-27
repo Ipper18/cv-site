@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme/theme-provider";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: {
-    default: "Jordan Carter · CV",
-    template: "%s · Jordan Carter",
+    default: "Igor Pakowski · CV",
+    template: "%s · Igor Pakowski",
   },
-  description: "Personal CV and admin portal",
+  description: "Personal CV portal",
 };
 
 export default function RootLayout({
@@ -18,9 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} bg-[var(--background)] text-[var(--foreground)]`}>
-        {children}
+        <ThemeProvider>
+          {children}
+          <ThemeToggle />
+        </ThemeProvider>
       </body>
     </html>
   );
