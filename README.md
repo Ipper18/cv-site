@@ -2,8 +2,9 @@
 
 Personal CV/portfolio built with Next.js (App Router), Tailwind CSS, and Prisma. It exposes two entry points:
 
-- `/cv` – read-only CV view rendered from the database (falls back to bundled seed data only when the database is empty).
-- `/cv-admin` – password-protected admin area with forms for all CV entities.
+- `/cv` - read-only CV view rendered from the database (falls back to bundled seed data only when the database is empty).
+- `/cv-admin` - password-protected admin area with forms for all CV entities.
+- Images are served from `public/images` (picked from dropdowns in `/cv-admin`, no external URLs required).
 
 ## Tech Stack
 
@@ -38,6 +39,7 @@ Personal CV/portfolio built with Next.js (App Router), Tailwind CSS, and Prisma.
    ```
    - `/cv` shows the public CV.
    - `/cv-admin` prompts for the seeded credentials.
+   - Drop your photos/screens into `public/images` so they appear in the admin dropdowns.
 
 ## Admin Credentials
 
@@ -79,6 +81,11 @@ Run `npx prisma migrate deploy && npm run prisma:seed` as part of your deploymen
 - Sessions live in the `Session` table; `SESSION_TTL_HOURS` controls expiration.
 - Logout clears the record and the HTTP-only cookie.
 
+## Images
+
+- All photos (profile + project galerie) must live in `public/images`. Add files to that folder and select them in `/cv-admin` from dropdown lists.
+- Existing external URLs will show as “(missing)” until you add the file; pick a local file and save to update.
+
 ## Project Structure Highlights
 
 ```
@@ -100,8 +107,11 @@ Dockerfile           Multi-stage build for Coolify
 - Responsive two-column CV layout with sticky profile card, soft gray palette, and teal accent interactions.
 - Project cards open a URL-driven drawer (`/cv?project=slug`) with long description, tech tags, links, and gallery images.
 - Hover microinteractions (scale + shadow) and fade-in sections provide subtle motion without heavy libraries.
+- Sticky language toggle with circular flags (PL/EN) and per-locale date formatting (PL uses Polish month names).
+- Floating scroll-to-top button available on every page.
 
 ## Admin Panel
 - Tabbed dashboard covering Personal Info, Education, Skills, Experience, and Projects.
 - Projects tab manages slugs, descriptions, tech stack, plus nested link/image tables with ordering controls.
 - All changes invalidate `/cv` instantly; credentials stay sourced from env vars only.
+- Image fields are dropdowns populated from `public/images`, making deploys self-contained (Coolify-friendly).

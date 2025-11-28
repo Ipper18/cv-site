@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -109,6 +110,7 @@ export function CvClient({ data, personalInfo }: Props) {
 
   return (
     <div className={`relative ${isTyping || loading ? "language-typing" : ""}`}>
+      <Script src="https://platform.linkedin.com/badges/js/profile.js" strategy="afterInteractive" />
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 lg:flex-row">
         <aside className="lg:w-1/3 lg:min-h-screen lg:sticky lg:top-8">
           <ProfileCard personalInfo={effectivePersonalInfo} labels={ui} />
@@ -184,10 +186,11 @@ function ProfileCard({ personalInfo, labels }: { personalInfo: CvPersonalInfo; l
         <ContactRow label={labels.email} value={personalInfo.email} />
         <ContactRow label={labels.city} value={personalInfo.city} />
         <ContactRow label={labels.github} href={personalInfo.githubUrl} value={personalInfo.githubUrl.replace(/^https?:\/\//, "")} />
-        <ContactRow label={labels.linkedin} href={personalInfo.linkedinUrl} value={personalInfo.linkedinUrl.replace(/^https?:\/\//, "")} />
         {personalInfo.websiteUrl ? (
           <ContactRow label={labels.website} href={personalInfo.websiteUrl} value={personalInfo.websiteUrl.replace(/^https?:\/\//, "")} />
         ) : null}
+        <ContactRow label={labels.linkedin} href={personalInfo.linkedinUrl} value={personalInfo.linkedinUrl.replace(/^https?:\/\//, "")} />
+        <LinkedInBadge />
       </div>
     </div>
   );
@@ -341,5 +344,25 @@ function ProjectDrawer({ project, onClose, labels }: { project?: CvProject; onCl
         ) : null}
       </aside>
     </>
+  );
+}
+
+function LinkedInBadge() {
+  return (
+    <div className="flex justify-center">
+      <div
+        className="badge-base LI-profile-badge"
+        data-locale="pl_PL"
+        data-size="medium"
+        data-theme="light"
+        data-type="VERTICAL"
+        data-vanity="igor-pakowski-781142232"
+        data-version="v1"
+      >
+        <a className="badge-base__link LI-simple-link" href="https://pl.linkedin.com/in/igor-pakowski-781142232?trk=profile-badge">
+          Igor Pakowski
+        </a>
+      </div>
+    </div>
   );
 }
