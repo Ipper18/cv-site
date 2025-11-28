@@ -356,10 +356,10 @@ function LinkedInBadge() {
         data-size="medium"
         data-theme="light"
         data-type="VERTICAL"
-        data-vanity="igor-pakowski-781142232"
+        data-vanity="igorpakowski"
         data-version="v1"
       >
-        <a className="badge-base__link LI-simple-link" href="https://pl.linkedin.com/in/igor-pakowski-781142232?trk=profile-badge">
+        <a className="badge-base__link LI-simple-link" href="https://pl.linkedin.com/in/igorpakowski?trk=profile-badge">
           Igor Pakowski
         </a>
       </div>
