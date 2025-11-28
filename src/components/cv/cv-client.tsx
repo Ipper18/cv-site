@@ -46,43 +46,43 @@ export function CvClient({ data, personalInfo }: Props) {
     () =>
       language === "pl"
         ? {
-            educationTitle: "Edukacja",
-            educationSubtitle: "Formalne wyksztalcenie i certyfikacje",
-            skillsTitle: "Umiejetnosci",
-            skillsSubtitle: "Technologie, narzedzia i specjalizacje",
-            experienceTitle: "Doswiadczenie",
-            experienceSubtitle: "Ostatnie zaangazowania i projekty",
-            projectsTitle: "Projekty",
-            projectsSubtitle: "Wybrane realizacje i dema",
-            techStack: "Stos technologiczny",
-            links: "Linki",
-            gallery: "Galeria",
-            close: "Zamknij",
-            email: "Email",
-            city: "Miasto",
-            github: "GitHub",
-            linkedin: "LinkedIn",
-            website: "Strona WWW",
-          }
+          educationTitle: "Edukacja",
+          educationSubtitle: "Formalne wyksztalcenie i certyfikacje",
+          skillsTitle: "Umiejetnosci",
+          skillsSubtitle: "Technologie, narzedzia i specjalizacje",
+          experienceTitle: "Doswiadczenie",
+          experienceSubtitle: "Ostatnie zaangazowania i projekty",
+          projectsTitle: "Projekty",
+          projectsSubtitle: "Wybrane realizacje i dema",
+          techStack: "Stos technologiczny",
+          links: "Linki",
+          gallery: "Galeria",
+          close: "Zamknij",
+          email: "Email",
+          city: "Miasto",
+          github: "GitHub",
+          linkedin: "LinkedIn",
+          website: "Strona WWW",
+        }
         : {
-            educationTitle: "Education",
-            educationSubtitle: "Formal training and certifications",
-            skillsTitle: "Skills",
-            skillsSubtitle: "Technologies, tools, and specializations",
-            experienceTitle: "Experience",
-            experienceSubtitle: "Recent engagements and deliveries",
-            projectsTitle: "Projects",
-            projectsSubtitle: "Featured builds and demos",
-            techStack: "Tech stack",
-            links: "Links",
-            gallery: "Gallery",
-            close: "Close",
-            email: "Email",
-            city: "City",
-            github: "GitHub",
-            linkedin: "LinkedIn",
-            website: "Website",
-          },
+          educationTitle: "Education",
+          educationSubtitle: "Formal training and certifications",
+          skillsTitle: "Skills",
+          skillsSubtitle: "Technologies, tools, and specializations",
+          experienceTitle: "Experience",
+          experienceSubtitle: "Recent engagements and deliveries",
+          projectsTitle: "Projects",
+          projectsSubtitle: "Featured builds and demos",
+          techStack: "Tech stack",
+          links: "Links",
+          gallery: "Gallery",
+          close: "Close",
+          email: "Email",
+          city: "City",
+          github: "GitHub",
+          linkedin: "LinkedIn",
+          website: "Website",
+        },
     [language],
   );
 
@@ -149,9 +149,8 @@ export function CvClient({ data, personalInfo }: Props) {
                   key={project.id ?? project.slug}
                   type="button"
                   onClick={() => handleSelectProject(project.slug)}
-                  className={`rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
-                    selectedProject?.slug === project.slug ? "ring-2 ring-[var(--accent)]" : ""
-                  }`}
+                  className={`rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${selectedProject?.slug === project.slug ? "ring-2 ring-[var(--accent)]" : ""
+                    }`}
                 >
                   <p className="text-sm uppercase tracking-[0.3em] text-slate-400">{project.techTags.join(" • ")}</p>
                   <h3 className="mt-2 text-xl font-semibold text-[var(--foreground)]">{project.name}</h3>
@@ -180,7 +179,7 @@ function ProfileCard({ personalInfo, labels }: { personalInfo: CvPersonalInfo; l
         <p className="mt-4 text-sm leading-relaxed text-[var(--muted)]">{personalInfo.shortBio}</p>
       </div>
       <div className="mt-6 space-y-3 text-sm">
-        <ContactRow label={labels.email} href={`mailto:${personalInfo.email}`} value={personalInfo.email} />
+        <ContactRow label={labels.email} value={personalInfo.email} />
         <ContactRow label={labels.city} value={personalInfo.city} />
         <ContactRow label={labels.github} href={personalInfo.githubUrl} value={personalInfo.githubUrl.replace(/^https?:\/\//, "")} />
         <ContactRow label={labels.linkedin} href={personalInfo.linkedinUrl} value={personalInfo.linkedinUrl.replace(/^https?:\/\//, "")} />
@@ -275,15 +274,13 @@ function ProjectDrawer({ project, onClose, labels }: { project?: CvProject; onCl
   return (
     <>
       <div
-        className={`fixed inset-0 z-40 bg-slate-900/40 transition-opacity duration-300 ${
-          isOpen ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        className={`fixed inset-0 z-40 bg-slate-900/40 transition-opacity duration-300 ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
         onClick={onClose}
       />
       <aside
-        className={`fixed top-0 right-0 z-50 h-full w-full max-w-xl overflow-y-auto bg-white px-6 py-10 shadow-2xl transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 z-50 h-full w-full max-w-xl overflow-y-auto bg-white px-6 py-10 shadow-2xl transition-transform duration-300 ${isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         {project ? (
           <div className="space-y-6">
