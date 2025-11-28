@@ -72,8 +72,7 @@ export const seedData: CvSeedData = {
   personalInfo: {
     fullName: "Jordan Carter",
     title: "Automation & Software Engineer",
-    photoUrl:
-      "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=600&q=80",
+    photoUrl: "/images/igor-profile.jpeg",
     shortBio:
       "Engineer crafting resilient automation platforms, developer tooling, and cloud-native services that keep distributed teams shipping with confidence.",
     email: "hello@sample.dev",
@@ -174,14 +173,12 @@ export const seedData: CvSeedData = {
       ],
       images: [
         {
-          imageUrl:
-            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=80",
+          imageUrl: "/images/ops-canvas-1.svg",
           altText: "OpsCanvas dashboard",
           order: 1,
         },
         {
-          imageUrl:
-            "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1100&q=80",
+          imageUrl: "/images/ops-canvas-2.svg",
           altText: "Automation workflow",
           order: 2,
         },
@@ -200,8 +197,7 @@ export const seedData: CvSeedData = {
       ],
       images: [
         {
-          imageUrl:
-            "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1100&q=80",
+          imageUrl: "/images/telemetry-kit.svg",
           altText: "Metrics grid",
           order: 1,
         },

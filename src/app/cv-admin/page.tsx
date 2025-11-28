@@ -23,6 +23,8 @@ import { ConfirmDeleteButton } from "@/components/admin/confirm-delete-button";
 import { AdminTabs } from "@/components/admin/tabs";
 import { requireAdminOrRedirect } from "@/lib/auth";
 import { getCvData } from "@/lib/cv-data";
+import { listPublicImages } from "@/lib/image-files";
+import { getImageFileName, normalizeImagePath, pickImageOption } from "@/lib/image-paths";
 import { seedData } from "@/lib/seed-data";
 import { toInputMonthValue } from "@/lib/utils";
 
@@ -39,6 +41,24 @@ export default async function AdminPage() {
   const data = await getCvData();
   const fromSeed = data.fromSeed;
   const personalDefaults = data.personalInfo ?? seedData.personalInfo;
+  const imageOptions = await listPublicImages();
+  const personalImage = pickImageOption(personalDefaults.photoUrl, imageOptions);
+  const imageListNote = !imageOptions.length
+    ? "Add images to /public/images in the repository to populate this list."
+    : undefined;
+  const personalImageNote =
+    personalImage.missing && imageOptions.length
+      ? "Current photo is not stored in /public/images. Pick one from the list after adding it to the repo."
+      : imageListNote;
+
+  const getImageSelection = (current?: string) => {
+    const normalized = current ? normalizeImagePath(current) : "";
+    const inList = normalized ? imageOptions.includes(normalized) : false;
+    return {
+      value: inList ? normalized : imageOptions[0] ?? "",
+      missing: Boolean(normalized && !inList),
+    };
+  };
 
   return (
     <div className="min-h-screen bg-[var(--background)] px-4 py-12 text-[var(--foreground)]">
@@ -96,7 +116,14 @@ export default async function AdminPage() {
                 <TextField label="GitHub URL" name="githubUrl" defaultValue={personalDefaults.githubUrl} required />
                 <TextField label="LinkedIn URL" name="linkedinUrl" defaultValue={personalDefaults.linkedinUrl} required />
                 <TextField label="Website" name="websiteUrl" defaultValue={personalDefaults.websiteUrl ?? ""} />
-                <TextField label="Photo URL" name="photoUrl" defaultValue={personalDefaults.photoUrl} required />
+                <SelectField
+                  label="Photo"
+                  name="photoUrl"
+                  options={imageOptions}
+                  defaultValue={personalImage.value}
+                  required
+                  note={personalImageNote}
+                />
                 <TextareaField label="Short bio" name="shortBio" defaultValue={personalDefaults.shortBio} wrapperClassName="md:col-span-2" rows={4} required />
               </div>
               <div>
@@ -333,22 +360,44 @@ export default async function AdminPage() {
                       <p className="text-sm font-semibold">Images</p>
                       {project.id ? (
                         <>
-                          {project.images.map((image) => (
-                            <form key={image.id ?? image.imageUrl} action={saveProjectImage} className="grid gap-2 rounded-2xl border border-slate-200 p-3">
-                              <input type="hidden" name="id" value={image.id ?? ""} />
-                              <input type="hidden" name="projectId" value={project.id ?? ""} />
-                              <TextField label="Image URL" name="imageUrl" defaultValue={image.imageUrl} required />
-                              <TextField label="Alt text" name="altText" defaultValue={image.altText} required />
-                              <TextField label="Order" name="order" type="number" defaultValue={String(image.order)} />
-                              <div className="flex gap-2">
-                                <button className="pressable flex-1 rounded-2xl border border-[var(--accent)] px-3 py-2 text-xs text-[var(--accent)]">Update</button>
-                                <ConfirmDeleteButton action={deleteProjectImage} name="id" value={image.id ?? ""} label="Remove" confirmLabel="Remove" />
-                              </div>
-                            </form>
-                          ))}
+                          {project.images.map((image) => {
+                            const imageSelection = getImageSelection(image.imageUrl);
+                            const note =
+                              imageSelection.missing && imageOptions.length
+                                ? "This file is not in /public/images. Choose one from the list."
+                                : imageListNote;
+
+                            return (
+                              <form key={image.id ?? image.imageUrl} action={saveProjectImage} className="grid gap-2 rounded-2xl border border-slate-200 p-3">
+                                <input type="hidden" name="id" value={image.id ?? ""} />
+                                <input type="hidden" name="projectId" value={project.id ?? ""} />
+                                <SelectField
+                                  label="Image"
+                                  name="imageUrl"
+                                  options={imageOptions}
+                                  defaultValue={imageSelection.value}
+                                  required
+                                  note={note}
+                                />
+                                <TextField label="Alt text" name="altText" defaultValue={image.altText} required />
+                                <TextField label="Order" name="order" type="number" defaultValue={String(image.order)} />
+                                <div className="flex gap-2">
+                                  <button className="pressable flex-1 rounded-2xl border border-[var(--accent)] px-3 py-2 text-xs text-[var(--accent)]">Update</button>
+                                  <ConfirmDeleteButton action={deleteProjectImage} name="id" value={image.id ?? ""} label="Remove" confirmLabel="Remove" />
+                                </div>
+                              </form>
+                            );
+                          })}
                           <form action={saveProjectImage} className="grid gap-2 rounded-2xl border border-dashed border-slate-300 p-3">
                             <input type="hidden" name="projectId" value={project.id} />
-                            <TextField label="Image URL" name="imageUrl" placeholder="https://" required />
+                            <SelectField
+                              label="Image"
+                              name="imageUrl"
+                              options={imageOptions}
+                              defaultValue={imageOptions[0] ?? ""}
+                              required
+                              note={imageListNote}
+                            />
                             <TextField label="Alt text" name="altText" placeholder="Dashboard" required />
                             <TextField label="Order" name="order" type="number" defaultValue="0" />
                             <button className="pressable rounded-2xl border border-[var(--accent)] px-3 py-2 text-xs text-[var(--accent)]">
@@ -409,6 +458,39 @@ function TextField({ label, wrapperClassName = "", ...props }: TextProps) {
         {...props}
         className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--accent)]"
       />
+    </label>
+  );
+}
+
+type SelectProps = Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "className"> & {
+  label: string;
+  options: string[];
+  note?: string;
+  wrapperClassName?: string;
+};
+
+function SelectField({ label, options, note, wrapperClassName = "", required, ...props }: SelectProps) {
+  const hasOptions = options.length > 0;
+  return (
+    <label className={`text-sm text-[var(--muted)] ${wrapperClassName}`}>
+      <span className="mb-1 block text-xs uppercase tracking-[0.2em]">{label}</span>
+      <select
+        {...props}
+        required={Boolean(required && hasOptions)}
+        disabled={!hasOptions}
+        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--accent)] disabled:bg-slate-100"
+      >
+        {hasOptions ? (
+          options.map((option) => (
+            <option key={option} value={option}>
+              {getImageFileName(option)}
+            </option>
+          ))
+        ) : (
+          <option value="">Add images to /public/images</option>
+        )}
+      </select>
+      {note ? <p className="mt-1 text-xs text-amber-700">{note}</p> : null}
     </label>
   );
 }

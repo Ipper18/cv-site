@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { isPublicImagePath, normalizeImagePath } from "@/lib/image-paths";
+
 const monthRegex = /^\d{4}-\d{2}$/;
 const slugRegex = /^[a-z0-9-]+$/;
 
@@ -18,7 +20,11 @@ export const loginSchema = z.object({
 export const personalInfoSchema = z.object({
   fullName: z.string().min(1),
   title: z.string().min(1),
-  photoUrl: z.string().url(),
+  photoUrl: z
+    .string()
+    .min(1)
+    .transform((value) => normalizeImagePath(value))
+    .refine((value) => isPublicImagePath(value), { message: "Select an image from /public/images" }),
   shortBio: z.string().min(1),
   email: z.string().email(),
   city: z.string().min(1),
@@ -85,7 +91,11 @@ export const projectLinkSchema = z.object({
 export const projectImageSchema = z.object({
   id: idSchema.optional(),
   projectId: idSchema,
-  imageUrl: z.string().url(),
+  imageUrl: z
+    .string()
+    .min(1)
+    .transform((value) => normalizeImagePath(value))
+    .refine((value) => isPublicImagePath(value), { message: "Select an image from /public/images" }),
   altText: z.string().min(1),
   order: z.coerce.number().int().nonnegative().default(0),
 });

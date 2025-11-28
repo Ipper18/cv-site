@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import type { CvData, CvEducation, CvExperience, CvProject, CvSkillCategory, CvPersonalInfo } from "@/lib/cv-data";
+import { normalizeImagePath } from "@/lib/image-paths";
 import { formatDateRange } from "@/lib/utils";
 import { useLanguage } from "@/components/i18n/language-provider";
 import { useCvTranslation } from "@/components/i18n/use-cv-translation";
@@ -172,7 +173,7 @@ function ProfileCard({ personalInfo, labels }: { personalInfo: CvPersonalInfo; l
     <div className="rounded-3xl border border-white/60 bg-white p-8 shadow-xl">
       <div className="flex flex-col items-center text-center">
         <div className="relative h-32 w-32 overflow-hidden rounded-full">
-          <Image src={personalInfo.photoUrl} alt={personalInfo.fullName} fill sizes="128px" className="object-cover" />
+          <Image src={normalizeImagePath(personalInfo.photoUrl)} alt={personalInfo.fullName} fill sizes="128px" className="object-cover" />
         </div>
         <h1 className="mt-6 text-3xl font-semibold">{personalInfo.fullName}</h1>
         <p className="text-[var(--accent)]">{personalInfo.title}</p>
@@ -330,7 +331,7 @@ function ProjectDrawer({ project, onClose, labels }: { project?: CvProject; onCl
                 <h3 className="text-sm font-semibold text-[var(--foreground)]">{labels.gallery}</h3>
                 {project.images.map((image) => (
                   <div key={image.id ?? image.imageUrl} className="overflow-hidden rounded-2xl">
-                    <Image src={image.imageUrl} alt={image.altText} width={960} height={540} className="h-auto w-full object-cover" />
+                    <Image src={normalizeImagePath(image.imageUrl)} alt={image.altText} width={960} height={540} className="h-auto w-full object-cover" />
                   </div>
                 ))}
               </div>

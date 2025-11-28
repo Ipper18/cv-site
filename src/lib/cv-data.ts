@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { normalizeImagePath } from "@/lib/image-paths";
 import { seedData, type CvSeedData } from "@/lib/seed-data";
 
 export type CvPersonalInfo = {
@@ -157,7 +158,7 @@ function serializeProjects(entries: Array<{
       images: project.images
         .map((image) => ({
           id: image.id,
-          imageUrl: image.imageUrl,
+          imageUrl: normalizeImagePath(image.imageUrl),
           altText: image.altText,
           order: image.order,
         }))
@@ -191,7 +192,10 @@ function serializeSkills(entries: Array<{
 
 function convertSeed(seed: CvSeedData): CvData {
   return {
-    personalInfo: seed.personalInfo,
+    personalInfo: {
+      ...seed.personalInfo,
+      photoUrl: normalizeImagePath(seed.personalInfo.photoUrl),
+    },
     education: seed.education,
     skillCategories: seed.skillCategories,
     experiences: seed.experiences.map((exp) => ({
@@ -200,6 +204,10 @@ function convertSeed(seed: CvSeedData): CvData {
     })),
     projects: seed.projects.map((project) => ({
       ...project,
+      images: project.images.map((image) => ({
+        ...image,
+        imageUrl: normalizeImagePath(image.imageUrl),
+      })),
       techTags: splitList(project.techStack),
     })),
     fromSeed: true,
@@ -246,7 +254,7 @@ export async function getCvData(options?: { fallbackToSeed?: boolean }) {
             id: personalInfo.id,
             fullName: personalInfo.fullName,
             title: personalInfo.title,
-            photoUrl: personalInfo.photoUrl,
+            photoUrl: normalizeImagePath(personalInfo.photoUrl),
             shortBio: personalInfo.shortBio,
             email: personalInfo.email,
             city: personalInfo.city,

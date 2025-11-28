@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="telemetryA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" rx="28" fill="#0b1220" />
+  <rect x="80" y="80" width="1040" height="470" rx="26" fill="#0f172a" stroke="#38bdf8" stroke-opacity="0.35" />
+  <rect x="130" y="130" width="940" height="370" rx="20" fill="#0b1323" stroke="#1f2937" />
+  <rect x="170" y="170" width="360" height="290" rx="16" fill="#111827" stroke="#1f2937" />
+  <rect x="570" y="170" width="430" height="290" rx="16" fill="#0f172a" stroke="#1f2937" />
+  <rect x="200" y="200" width="300" height="70" rx="14" fill="#0ea5e9" fill-opacity="0.12" stroke="#38bdf8" stroke-opacity="0.4" />
+  <path d="M220 235 h60 l20 -24 l40 48 l40 -56 l40 32 h60" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <rect x="200" y="300" width="300" height="30" rx="10" fill="#111827" stroke="#38bdf8" stroke-opacity="0.4" />
+  <rect x="210" y="308" width="80" height="14" rx="7" fill="#38bdf8" />
+  <rect x="310" y="308" width="60" height="14" rx="7" fill="#a5b4fc" />
+  <rect x="390" y="308" width="90" height="14" rx="7" fill="#38bdf8" />
+  <rect x="200" y="350" width="300" height="90" rx="12" fill="#0b1220" stroke="#1f2937" />
+  <path d="M220 380 h80" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" />
+  <path d="M220 404 h120" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round" />
+  <path d="M220 428 h160" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" />
+  <rect x="600" y="200" width="370" height="30" rx="12" fill="#0ea5e9" fill-opacity="0.1" stroke="#38bdf8" stroke-opacity="0.4" />
+  <rect x="600" y="250" width="370" height="170" rx="14" fill="#0b1220" stroke="#1f2937" />
+  <path d="M630 330 h80 l30 -46 l60 82 l60 -120 l80 86 h90" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="630" cy="330" r="7" fill="#38bdf8" />
+  <circle cx="710" cy="330" r="7" fill="#38bdf8" />
+  <circle cx="770" cy="286" r="7" fill="#38bdf8" />
+  <circle cx="830" cy="368" r="7" fill="#38bdf8" />
+  <circle cx="890" cy="248" r="7" fill="#38bdf8" />
+  <circle cx="970" cy="334" r="7" fill="#38bdf8" />
+  <path d="M600 440 h370" stroke="url(#telemetryA)" stroke-width="8" stroke-linecap="round" />
+  <rect x="190" y="480" width="820" height="8" rx="4" fill="#0ea5e9" fill-opacity="0.4" />
+</svg>
