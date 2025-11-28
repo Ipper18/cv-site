@@ -13,11 +13,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "i.imgur.com"
+        hostname: "**imgur.com",
       },
       {
-        protocol: "https",
-        hostname: "imgur.com",
+        protocol: "http",
+        hostname: "**imgur.com",
       },
     ],
   },

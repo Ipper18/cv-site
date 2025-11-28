@@ -22,9 +22,9 @@ export function LanguageToggle() {
           <div className={`flag-thumb ${isEn ? "flag-thumb-en" : "flag-thumb-pl"}`}>{isEn ? <Flag variant="en" /> : <Flag variant="pl" />}</div>
         </div>
         <span className="flag-label">
-          <Flag variant="pl" /> <span className={`flag-text ${!isEn ? "is-active" : ""}`}>PL</span>
+          <span className={`flag-text ${!isEn ? "is-active" : ""}`}>PL</span>
           <span className="flag-divider" />
-          <Flag variant="en" /> <span className={`flag-text ${isEn ? "is-active" : ""}`}>EN</span>
+          <span className={`flag-text ${isEn ? "is-active" : ""}`}>EN</span>
         </span>
       </button>
     </div>
