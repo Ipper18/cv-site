@@ -110,7 +110,7 @@ export function CvClient({ data, personalInfo }: Props) {
 
   return (
     <div className={`relative ${isTyping || loading ? "language-typing" : ""}`}>
-      <Script src="https://platform.linkedin.com/badges/js/profile.js" strategy="afterInteractive" />
+      <Script src="https://platform.linkedin.com/badges/js/profile.js" strategy="afterInteractive" async defer type="text/javascript" />
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 lg:flex-row">
         <aside className="lg:w-1/3 lg:min-h-screen lg:sticky lg:top-8">
           <ProfileCard personalInfo={effectivePersonalInfo} labels={ui} />
