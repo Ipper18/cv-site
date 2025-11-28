@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { LanguageProvider } from "@/components/i18n/language-provider";
 import { LanguageToggle } from "@/components/i18n/language-toggle";
+import { ScrollToTop } from "@/components/theme/scroll-to-top";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <ThemeProvider>
             <LanguageToggle />
             {children}
+            <ScrollToTop />
             <ThemeToggle />
           </ThemeProvider>
         </LanguageProvider>

@@ -24,9 +24,8 @@ export function getImageFileName(path: string) {
 
 export function pickImageOption(current: string | undefined, available: string[]) {
   const normalized = current ? normalizeImagePath(current) : "";
-  const inList = normalized ? available.includes(normalized) : false;
-  if (inList) {
-    return { value: normalized, missing: false };
+  if (normalized) {
+    return { value: normalized, missing: !available.includes(normalized) };
   }
-  return { value: available[0] ?? "", missing: Boolean(normalized) };
+  return { value: available[0] ?? "", missing: false };
 }

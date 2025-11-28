@@ -53,10 +53,9 @@ export default async function AdminPage() {
 
   const getImageSelection = (current?: string) => {
     const normalized = current ? normalizeImagePath(current) : "";
-    const inList = normalized ? imageOptions.includes(normalized) : false;
     return {
-      value: inList ? normalized : imageOptions[0] ?? "",
-      missing: Boolean(normalized && !inList),
+      value: (normalized || imageOptions[0] || "") as string,
+      missing: Boolean(normalized && !imageOptions.includes(normalized)),
     };
   };
 
@@ -120,7 +119,8 @@ export default async function AdminPage() {
                   label="Photo"
                   name="photoUrl"
                   options={imageOptions}
-                  defaultValue={personalImage.value}
+                  currentValue={personalImage.value}
+                  missing={personalImage.missing}
                   required
                   note={personalImageNote}
                 />
@@ -375,7 +375,8 @@ export default async function AdminPage() {
                                   label="Image"
                                   name="imageUrl"
                                   options={imageOptions}
-                                  defaultValue={imageSelection.value}
+                                  currentValue={imageSelection.value}
+                                  missing={imageSelection.missing}
                                   required
                                   note={note}
                                 />
@@ -394,7 +395,7 @@ export default async function AdminPage() {
                               label="Image"
                               name="imageUrl"
                               options={imageOptions}
-                              defaultValue={imageOptions[0] ?? ""}
+                              currentValue={imageOptions[0] ?? ""}
                               required
                               note={imageListNote}
                             />
@@ -465,25 +466,33 @@ function TextField({ label, wrapperClassName = "", ...props }: TextProps) {
 type SelectProps = Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "className"> & {
   label: string;
   options: string[];
+  currentValue?: string;
+  missing?: boolean;
   note?: string;
   wrapperClassName?: string;
 };
 
-function SelectField({ label, options, note, wrapperClassName = "", required, ...props }: SelectProps) {
+function SelectField({ label, options, currentValue, missing, note, wrapperClassName = "", required, ...props }: SelectProps) {
   const hasOptions = options.length > 0;
+  const valueInList = currentValue && options.includes(currentValue);
+  const effectiveValue = currentValue || options[0] || "";
+
+  const displayOptions = valueInList ? options : currentValue ? [currentValue, ...options] : options;
+
   return (
     <label className={`text-sm text-[var(--muted)] ${wrapperClassName}`}>
       <span className="mb-1 block text-xs uppercase tracking-[0.2em]">{label}</span>
       <select
         {...props}
+        defaultValue={effectiveValue}
         required={Boolean(required && hasOptions)}
-        disabled={!hasOptions}
+        disabled={!hasOptions && !currentValue}
         className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--accent)] disabled:bg-slate-100"
       >
-        {hasOptions ? (
-          options.map((option) => (
+        {displayOptions.length ? (
+          displayOptions.map((option) => (
             <option key={option} value={option}>
-              {getImageFileName(option)}
+              {missing && option === currentValue ? `${getImageFileName(option)} (missing)` : getImageFileName(option)}
             </option>
           ))
         ) : (

@@ -42,6 +42,7 @@ export function CvClient({ data, personalInfo }: Props) {
   const searchParams = useSearchParams();
   const { language, isTyping } = useLanguage();
   const { data: localizedData, personalInfo: localizedPersonal, loading, error } = useCvTranslation(data, personalInfo, language);
+  const dateLocale = language === "pl" ? "pl-PL" : "en-US";
 
   const ui: UiLabels = useMemo(
     () =>
@@ -119,7 +120,7 @@ export function CvClient({ data, personalInfo }: Props) {
             <SectionHeader title={ui.educationTitle} subtitle={ui.educationSubtitle} />
             <div className="space-y-4">
               {localizedData.education.map((entry) => (
-                <EducationCard key={entry.id ?? entry.school} education={entry} />
+                <EducationCard key={entry.id ?? entry.school} education={entry} locale={dateLocale} />
               ))}
             </div>
           </section>
@@ -137,7 +138,7 @@ export function CvClient({ data, personalInfo }: Props) {
             <SectionHeader title={ui.experienceTitle} subtitle={ui.experienceSubtitle} />
             <div className="space-y-4">
               {localizedData.experiences.map((experience) => (
-                <ExperienceCard key={experience.id ?? experience.company} experience={experience} />
+                <ExperienceCard key={experience.id ?? experience.company} experience={experience} locale={dateLocale} />
               ))}
             </div>
           </section>
@@ -218,12 +219,12 @@ function SectionHeader({ title, subtitle }: { title: string; subtitle: string })
   );
 }
 
-function EducationCard({ education }: { education: CvEducation }) {
+function EducationCard({ education, locale }: { education: CvEducation; locale: string }) {
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <div className="flex flex-wrap items-center justify-between text-sm text-[var(--muted)]">
         <span>{education.school}</span>
-        <span>{formatDateRange(education.startDate, education.endDate)}</span>
+        <span>{formatDateRange(education.startDate, education.endDate, locale)}</span>
       </div>
       <h3 className="mt-2 text-lg font-semibold text-[var(--foreground)]">
         {education.degree} • {education.field}
@@ -249,12 +250,12 @@ function SkillCard({ category }: { category: CvSkillCategory }) {
   );
 }
 
-function ExperienceCard({ experience }: { experience: CvExperience }) {
+function ExperienceCard({ experience, locale }: { experience: CvExperience; locale: string }) {
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <div className="flex flex-wrap items-center justify-between text-sm text-[var(--muted)]">
         <span>{experience.company}</span>
-        <span>{formatDateRange(experience.startDate, experience.endDate)}</span>
+        <span>{formatDateRange(experience.startDate, experience.endDate, locale)}</span>
       </div>
       <h3 className="mt-2 text-lg font-semibold text-[var(--foreground)]">{experience.role}</h3>
       {experience.location ? <p className="text-sm text-[var(--muted)]">{experience.location}</p> : null}

@@ -1,13 +1,13 @@
-export function formatDateLabel(value?: string) {
+export function formatDateLabel(value?: string, locale: string = "pl-PL") {
   if (!value) return "Present";
   const date = new Date(value);
-  return new Intl.DateTimeFormat("en", { month: "short", year: "numeric" }).format(date);
+  return new Intl.DateTimeFormat(locale, { month: "short", year: "numeric" }).format(date);
 }
 
-export function formatDateRange(start: string, end?: string) {
-  const startLabel = formatDateLabel(start);
-  const endLabel = end ? formatDateLabel(end) : "Present";
-  return `${startLabel} — ${endLabel}`;
+export function formatDateRange(start: string, end?: string, locale: string = "pl-PL") {
+  const startLabel = formatDateLabel(start, locale);
+  const endLabel = end ? formatDateLabel(end, locale) : locale.startsWith("pl") ? "Teraz" : "Present";
+  return `${startLabel} - ${endLabel}`;
 }
 
 export function toInputMonthValue(value?: string) {
