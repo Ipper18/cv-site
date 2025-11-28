@@ -13,8 +13,8 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "i.imgur.com",  // dokładnie ta domena
-        pathname: "/**",          // pozwól na wszystkie ścieżki
+        hostname: "i.imgur.com",
+        pathname: "/**",
       },
     ],
   },
