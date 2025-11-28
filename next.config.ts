@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+    domains: [
+      "images.unsplash.com",
+      "sample.dev",
+      "i.imgur.com",
+      "imgur.com",
+    ],
   },
 };
 
